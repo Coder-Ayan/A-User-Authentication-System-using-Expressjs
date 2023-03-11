@@ -1,0 +1,34 @@
+{% extends './layout.njk' %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/home.css">
+{% endblock %}
+
+{% block body %}
+    <div class="box">
+        <nav>
+            <h2 class="logo">
+                <span>UAS</span></h2>
+            <ul>
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                <li>
+                    <a href="/authentication">Login</a>
+                </li>
+                <li>
+                    <a href="/authentication">Sign In</a>
+                </li>
+            </ul>
+            <button>Log In</button>
+        </nav>
+        <div class="banner-text">
+            <h1>TUser Authentication System</h1>
+            <p>Created with <span>Expressjs</span></p>
+        </div>
+    </div>
+{% endblock %}
