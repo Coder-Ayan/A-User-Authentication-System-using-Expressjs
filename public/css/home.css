@@ -54,7 +54,7 @@ nav ul li a:hover {
     transition: 0.5s;
 }
 
-nav button {
+nav a button {
     padding: 12px 30px;
     border-radius: 30px;
     font-weight: bold;
@@ -64,10 +64,14 @@ nav button {
     font-size: 15px;
 }
 
-nav button:hover {
+nav a button:hover {
     transform: scale(1.1);
     transition: 0.5s;
     cursor: pointer;
+}
+
+nav a {
+    text-decoration: none;
 }
 
 .banner-text {

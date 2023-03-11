@@ -1,6 +1,7 @@
 const express = require('express')
 const nunjucks = require('nunjucks')
 const path = require('path')
+const authenticationRoute = require('./routes/authenticationRoute')
 
 const app = express()
 const port = 3000
@@ -17,20 +18,13 @@ nunjucks.configure('views', {
     express: app
 })
 
+// define the home page route
 app.get('/', (req, res) => {
     res.render('home')
 })
 
-app.get('/authentication', (req, res) => {
-    res.render('authentication', {
-        alerts: [
-            {
-                type: 'success',
-                message: 'Hello World!'
-            }
-        ]
-    })
-})
+// use authentication route
+app.use('/authentication', authenticationRoute)
 
 app.listen(port, () => {
     console.log(`User Authentication System listening on http://localhost:${port}`)
