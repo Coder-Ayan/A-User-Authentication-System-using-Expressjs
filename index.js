@@ -1,10 +1,15 @@
 const express = require('express')
 const nunjucks = require('nunjucks')
 const path = require('path')
+const connectToMongoDB = require('./connect-to-mongodb')
+// Routes
 const authenticationRoute = require('./routes/authenticationRoute')
 
 const app = express()
 const port = 3000
+
+// Connect to MongoDB
+connectToMongoDB()
 
 // Add Static
 app.use('/static', express.static(path.join(__dirname, 'public')))
