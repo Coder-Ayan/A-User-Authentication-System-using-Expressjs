@@ -11,7 +11,7 @@ const UserSchema = new Schema({
         required: 'Name is required'
     },
     email: {
-        type: SchemaTypes.Email,
+        type: String,
         unique: true,
         trim: true,
         lowercase: true,
