@@ -12,7 +12,7 @@
     <!-- Alert -->
     {% if alerts %}
         {% for alert in alerts %}
-            <div class="alert alert-{{alert.type | lower}}">
+            <div class="alert alert-{{'danger' if alert.type == 'error' else alert.type | lower}}">
                 <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                 <strong>{{alert.type | capitalize}}</strong>:
                 {{ alert.message }}
@@ -36,18 +36,18 @@
         <div class="form-section">
 
             <!-- login form -->
-            <form action="login/" method="post" class="login-box">
+            <form action="/authentication/login" method="post" class="login-box">
                 <input type="email" class="email ele" name="email" placeholder="youremail@email.com">
                 <input type="password" class="password ele" name="password" placeholder="password">
                 <button type="submit" class="clkbtn">Login</button>
             </form>
 
             <!-- signup form -->
-            <form action="signup/" method="post" class="signup-box">
+            <form action="/authentication/register" method="post" class="signup-box">
                 <input type="text" class="name ele" name="name" placeholder="Enter your name" minlength="3">
                 <input type="email" class="email ele" name="email" placeholder="youremail@email.com">
                 <input type="password" class="password ele" name="password" placeholder="password">
-                <input type="password" class="password ele" name="repeated-password" placeholder="Confirm password">
+                <input type="password" class="password ele" name="reentered-password" placeholder="Confirm password">
                 <button type="submit" class="clkbtn">Signup</button>
             </form>
         </div>

@@ -2,11 +2,14 @@ const express = require('express')
 const nunjucks = require('nunjucks')
 const path = require('path')
 const connectToMongoDB = require('./connect-to-mongodb')
+const bodyParser = require('body-parser');
 // Routes
 const authenticationRoute = require('./routes/authenticationRoute')
 
 const app = express()
 const port = 3000
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Connect to MongoDB
 connectToMongoDB()

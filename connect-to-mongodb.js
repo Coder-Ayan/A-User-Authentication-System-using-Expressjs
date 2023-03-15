@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
+
 mongoose.set('strictQuery', true)
 
-const URI = "mongodb://127.0.0.1:27017/user-authentication-system"
+const URI = `${process.env.DATABASE_HOST}/user-authentication-system`
 
 const connectToMongoDB = () => {
     mongoose.connect(URI)
