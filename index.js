@@ -28,7 +28,15 @@ nunjucks.configure('views', {
 
 // define the home page route
 app.get('/', (req, res) => {
-    res.render('home')
+    let context = req.app.locals.context
+    res.render('home', context)
+})
+
+// define the dashboard page route
+app.get('/dashboard', (req, res) => {
+    // TODO: show the dashboard page if the user is logged in
+    let context = req.app.locals.context
+    res.render('dashboard', context)
 })
 
 // use authentication route

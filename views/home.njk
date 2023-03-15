@@ -4,30 +4,18 @@
     Home
 {% endblock %}
 
-{% block css %}
-    <link rel="stylesheet" href="/static/css/home.css">
-{% endblock %}
-
 {% block body %}
-    <div class="box">
-        <nav>
-            <h2 class="logo">
-                <span>UAS</span></h2>
-            <ul>
-                <li>
-                    <a href="/">Home</a>
-                </li>
-                <li>
-                    <a href="/authentication">Login / Sign Up</a>
-                </li>
-            </ul>
-            <a href="/authentication">
-                <button>Login / Sign Up</button>
-            </a>
-        </nav>
-        <div class="banner-text">
-            <h1>User Authentication System</h1>
-            <p>Created with <span>Expressjs</span></p>
-        </div>
+    <div class="container row">
+        <h3>Hi, Welcome to this User Authentication System project</h3>
+        <p>
+            <strong>Created with: </strong>Expressjs
+        </p>
+        <p>
+            <strong>Auther: </strong>Ayan Das Karmakar
+        </p>
+        <p>
+            <strong>Template design is created by: </strong>
+            <a href="https://webninjadeveloper.com" target="_blank">Webninjadeveloper</a>
+        </p>
     </div>
 {% endblock %}

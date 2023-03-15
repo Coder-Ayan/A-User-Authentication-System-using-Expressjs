@@ -6,10 +6,10 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const User = require('../models/User');
 
-// Define the authentication page route
-router.get('/', (req, res) => {
+// Define the register page route
+router.get('/register', (req, res) => {
     let context = req.app.locals.context
-    res.render('authentication', context)
+    res.render('register', context)
 })
 
 // Define the register route
@@ -41,7 +41,7 @@ router.post('/register', [
                         }
                     })
                 }
-                return res.redirect('/authentication');
+                return res.redirect('/authentication/register');
             }
 
 
@@ -55,7 +55,7 @@ router.post('/register', [
                         }
                     ]
                 }
-                return res.redirect('/authentication');
+                return res.redirect('/authentication/register');
             }
 
             // Check whether the user with the given email address exists already
@@ -68,7 +68,7 @@ router.post('/register', [
                         }
                     ]
                 }
-                return res.redirect('/authentication')
+                return res.redirect('/authentication/register')
             }
 
             // Encrypt the password
@@ -99,7 +99,7 @@ router.post('/register', [
                     }
                 ]
             }
-            return res.redirect('/authentication');
+            return res.redirect('/dashboard');
 
         } catch (error) {
             console.log(error);
@@ -112,8 +112,14 @@ router.post('/register', [
                     }
                 ]
             }
-            return res.redirect('/authentication');
+            return res.redirect('/authentication/register');
         }
     });
+
+// Define the log in page route
+router.get('/login', (req, res) => {
+    let context = req.app.locals.context
+    res.render('login', context)
+})
 
 module.exports = router
