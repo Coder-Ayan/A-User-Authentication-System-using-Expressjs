@@ -51,17 +51,26 @@ nunjucks.configure('views', {
     express: app
 })
 
+
+app.use('/*', (req, res, next) => {
+    req.app.locals.context = {
+        ...req.app.locals.context,
+        isAuthenticated: req.session.isAuthenticated ? true : false
+    }
+    next()
+})
+
 // define the home page route
 app.get('/', (req, res) => {
     let context = req.app.locals.context
-    req.app.locals.context = []
+    req.app.locals.context = {}
     return res.render('home', context)
 })
 
 // define the dashboard page route
 app.get('/dashboard', continue_if_authenticated, (req, res) => {
     let context = { ...req.app.locals.context, user: req.session.user }
-    req.app.locals.context = []
+    req.app.locals.context = {}
     return res.render('dashboard', context)
 })
 

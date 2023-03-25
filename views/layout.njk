@@ -28,15 +28,18 @@
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="/authentication/register">Register</a>
-                        </li>
-                        <li>
-                            <a href="/authentication/login">Log In</a>
-                        </li>
-                        <li>
-                            <a href="/authentication/logout">Log Out</a>
-                        </li>
+                        {% if isAuthenticated %}
+                            <li>
+                                <a href="/authentication/logout">Log Out</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="/authentication/register">Register</a>
+                            </li>
+                            <li>
+                                <a href="/authentication/login">Log In</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

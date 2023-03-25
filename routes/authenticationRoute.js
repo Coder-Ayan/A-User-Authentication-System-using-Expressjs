@@ -6,12 +6,14 @@ require('dotenv').config();
 // Models
 const User = require('../models/User');
 //Middlewares
+const continue_if_authenticated = require('../middlewares/continue_if_authenticated')
 const continue_if_not_authenticated = require('../middlewares/continue_if_not_authenticated')
 
 // Define the register route
 router.get('/register', continue_if_not_authenticated, (req, res) => {
     let context = req.app.locals.context
-    req.app.locals.context = []
+    req.app.locals.context = {}
+    isAuthenticated = req.session.body
     return res.render('register', context)
 })
     .post('/register', continue_if_not_authenticated, [
@@ -118,7 +120,7 @@ router.get('/register', continue_if_not_authenticated, (req, res) => {
 // Define the login route
 router.get('/login', continue_if_not_authenticated, (req, res) => {
     let context = req.app.locals.context
-    req.app.locals.context = []
+    req.app.locals.context = {}
     return res.render('login', context)
 })
     .post('/login', continue_if_not_authenticated, [
@@ -213,5 +215,35 @@ router.get('/login', continue_if_not_authenticated, (req, res) => {
             }
         });
 
+router.get('/logout', continue_if_authenticated, (req, res) => {
+    try {
+        req.session.destroy();
+
+        // Create the context
+        req.app.locals.context = {
+            alerts: [
+                {
+                    type: 'success',
+                    message: "You have logged out successfully"
+                }
+            ]
+        }
+
+        return res.redirect('/');
+    } catch (error) {
+        console.log(error);
+
+        // Create the context
+        req.app.locals.context = {
+            alerts: [
+                {
+                    type: 'error',
+                    message: "Internal Server Error"
+                }
+            ]
+        }
+        return res.redirect('/');
+    }
+})
 
 module.exports = router
