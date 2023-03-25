@@ -10,22 +10,22 @@
             <form autocomplete="on" action="/authentication/register" method="post">
                 <div class="form-group">
                     <label>Name:</label>
-                    <input class="form-control" required type="text" name="name"/>
+                    <input class="form-control" type="text" name="name" minlength="3" maxlength="60" required/>
                 </div>
                 <div class="form-group">
                     <label>Email:</label>
-                    <input class="form-control" required type="email" name="email"/>
+                    <input class="form-control" type="email" name="email" required/>
                 </div>
                 <div class="form-group">
                     <label>Password:</label>
-                    <input class="form-control" required type="password" name="password"/>
+                    <input class="form-control" type="password" name="password" minlength="8" required/>
                 </div>
                 <div class="form-group">
                     <label>Re-enter Password:</label>
-                    <input class="form-control" required type="password" name="reentered-password"/>
+                    <input class="form-control" type="password" name="reentered-password" minlength="8" required/>
                 </div>
                 <div class="form-group">
-                    <input class="btn btn-primary" type="submit" value="Register"/>
+                    <input class="btn btn-primary" type="submit" value="Register" required/>
                 </div>
             </form>
         </div>

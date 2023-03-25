@@ -8,20 +8,20 @@ const validateEmail = (email) => {
 const UserSchema = new Schema({
     name: {
         type: String,
-        required: 'Name is required'
+        required: true
     },
     email: {
         type: String,
         unique: true,
         trim: true,
         lowercase: true,
-        required: 'Email address is required',
+        required: true,
         validate: [validateEmail, 'Please fill a valid email address'],
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
     password: {
         type: String,
-        required: 'Password address is required'
+        required: true
     }
 });
 
