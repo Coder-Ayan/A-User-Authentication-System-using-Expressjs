@@ -7,9 +7,13 @@
 {% block body %}
     <div class="container row">
         <h2>Hi {{user.name | capitalize}}, Welcome to your Dashboard</h2>
+        <hr>
+        <h3>Your details:</h3>
         <p>
-            <strong>Name: </strong>{{user.name | capitalize }}</p>
+            <strong>Name: </strong>{{user.name | capitalize }}
+        </p>
         <p>
-            <strong>Email: </strong>{{user.email | lower }}</p>
+            <strong>Email: </strong>{{user.email | lower }}
+        </p>
     </div>
 {% endblock %}

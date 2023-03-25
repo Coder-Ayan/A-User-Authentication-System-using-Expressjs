@@ -84,11 +84,15 @@ router.get('/register', continue_if_not_authenticated, (req, res) => {
                 const passwordHash = await bcrypt.hash(req.body['password'], salt);
 
                 // Create user
-                await User.create({
+                const user = await User.create({
                     name: req.body['name'],
                     email: req.body['email'],
                     password: passwordHash
                 });
+
+                // Set the session
+                req.session.isAuthenticated = true;
+                req.session.user = { name: user.name, email: user.email };
 
                 // Create the context
                 req.app.locals.context = {
