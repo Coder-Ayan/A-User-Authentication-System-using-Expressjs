@@ -2,12 +2,62 @@ const express = require('express')
 const router = express.Router()
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
+const Mailgen = require('mailgen');
 require('dotenv').config();
 // Models
 const User = require('../models/User');
 //Middlewares
 const continue_if_authenticated = require('../middlewares/continue_if_authenticated')
 const continue_if_not_authenticated = require('../middlewares/continue_if_not_authenticated')
+
+const sendverificationEmail = async (user) => {
+    let config = {
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL,
+            pass: process.env.PASSWORD
+        }
+    }
+
+    let transporter = nodemailer.createTransport(config);
+
+    let MailGenerator = new Mailgen({
+        theme: "salted",
+        product: {
+            name: "Express User Authentication System",
+            link: 'http://localhost:3000'
+        }
+    })
+
+    let email = {
+        body: {
+            name: user.name,
+            intro: "Thanks for signing up for Express User Authentication System. We\'re very excited to have you on board",
+            action: {
+                instructions: 'To access your dashboard, please confirm your account below:',
+                button: {
+                    color: '#22BC66',
+                    text: 'Verify your account',
+                    link: `http://localhost:3000/authentication/verify?userId=${user.id}`
+                }
+            },
+            outro: "Need help, or have questions? Just reply to this email, we\'d love to help."
+        }
+    }
+
+    let emailBody = MailGenerator.generate(email);
+
+    let message = {
+        from: process.env.EMAIL,
+        to: user.email,
+        subject: "Verify your email address",
+        html: emailBody
+    }
+
+    // Send the email
+    await transporter.sendMail(message)
+}
 
 // Define the register route
 router.get('/register', continue_if_not_authenticated, (req, res) => {
@@ -94,16 +144,20 @@ router.get('/register', continue_if_not_authenticated, (req, res) => {
                 req.session.isAuthenticated = true;
                 req.session.user = { name: user.name, email: user.email };
 
+                sendverificationEmail(user)
+
                 // Create the context
                 req.app.locals.context = {
                     alerts: [
                         {
                             type: 'success',
-                            message: "The user has been created successfully"
+                            message: "Please verify your email address. verification email is sent to your email address"
                         }
                     ]
                 }
-                return res.redirect('/dashboard');
+
+
+                return res.redirect('/');
 
             } catch (error) {
                 console.log(error);
@@ -219,6 +273,8 @@ router.get('/login', continue_if_not_authenticated, (req, res) => {
             }
         });
 
+
+// Define the logout route
 router.get('/logout', continue_if_authenticated, (req, res) => {
     try {
         req.session.destroy();
@@ -234,6 +290,57 @@ router.get('/logout', continue_if_authenticated, (req, res) => {
         }
 
         return res.redirect('/');
+    } catch (error) {
+        console.log(error);
+
+        // Create the context
+        req.app.locals.context = {
+            alerts: [
+                {
+                    type: 'error',
+                    message: "Internal Server Error"
+                }
+            ]
+        }
+        return res.redirect('/');
+    }
+})
+
+// Define the verify route
+router.get('/verify', async (req, res) => {
+    try {
+        let userId = req.query['userId']
+        let user = await User.findById(userId);
+
+
+
+        if (!user) {
+            // Create the context
+            req.app.locals.context = {
+                alerts: [
+                    {
+                        type: 'error',
+                        message: "Failed to verify email address as no user with the email address exists"
+                    }
+                ]
+            }
+            return res.redirect('/');
+        }
+
+        await User.updateOne(user, { isVerified: true })
+
+        // Create the context
+        req.app.locals.context = {
+            alerts: [
+                {
+                    type: 'success',
+                    message: "Your email address is verified successfully"
+                }
+            ]
+        }
+
+        return res.redirect('/');
+
     } catch (error) {
         console.log(error);
 

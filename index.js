@@ -10,6 +10,8 @@ require('dotenv').config()
 const authenticationRoute = require('./routes/authenticationRoute')
 //Middlewares
 const continue_if_authenticated = require('./middlewares/continue_if_authenticated')
+// Models
+const User = require('./models/User')
 
 
 const app = express()
@@ -28,7 +30,7 @@ const store = db.createSessionStore()
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
     secret: process.env.SESSION_SECRET,
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     store: store,
     cookie: {
@@ -68,10 +70,27 @@ app.get('/', (req, res) => {
 })
 
 // define the dashboard page route
-app.get('/dashboard', continue_if_authenticated, (req, res) => {
-    let context = { ...req.app.locals.context, user: req.session.user }
-    req.app.locals.context = {}
-    return res.render('dashboard', context)
+app.get('/dashboard', continue_if_authenticated, async (req, res) => {
+    let user = await User.findOne(req.session.user)
+    let isUserVerified = user.isVerified
+
+    if (isUserVerified) {
+        let context = { ...req.app.locals.context, user: req.session.user }
+        req.app.locals.context = {}
+        return res.render('dashboard', context)
+    } else {
+        // Create the context
+        req.app.locals.context = {
+            alerts: [
+                {
+                    type: 'info',
+                    message: "Please verify your email address to access the dashboard"
+                }
+            ]
+        }
+
+        return res.redirect('/');
+    }
 })
 
 // use authentication route
